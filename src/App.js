@@ -1,4 +1,3 @@
-import './App.css';
 import Header from './components/Header';
 import Input from './components/Input';
 import TaskList from './components/TaskList';
@@ -6,17 +5,19 @@ import React, { useState, useEffect } from 'react';
 
 function App() {
   const [ listItems, setListItems ] = useState([]);
+  const [ isMounted, setMounted ] = useState(false);
+  const [ numItems, setNumItems ] = useState(0);
   const baseServerURI = "https://notefy-server.herokuapp.com"
 
-  function handleAddItem(item) {
+  function handleAddItem(name, desc) {
     fetch(baseServerURI + '/tasks', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json; charset=UTF-8'
       },
       body: JSON.stringify({
-        name: item,
-        description: "Enter description",
+        name: name,
+        description: desc,
         status: false
       })
     })
@@ -46,14 +47,16 @@ function App() {
   }
 
   useEffect(() => {
-    fetch(baseServerURI + '/tasks')
+    if(!isMounted) {
+      fetch(baseServerURI + '/tasks')
     .then(res => res.json())
     .then(data => {
-      console.log(data);
       const newListItems = data.tasks.map((task) => task);
       setListItems([ ...listItems, ...newListItems ]);
-      
+      setMounted(true);
+      setNumItems(newListItems.length);
     })
+    }
   }, []);
 
   return (

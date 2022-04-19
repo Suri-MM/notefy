@@ -6,7 +6,7 @@ function TaskList(props) {
 
     return <div className = 'taskList'>
         { tasks.map((task) => {
-            return <Task key = { task._id } id = { task._id } name = { task.name } status = { task.status } onDoubleClick = { () => props.onDoubleClick(task._id) } />;
+            return <Task key = { task._id } id = { task._id } name = { task.name } desc = { task.description } status = { task.status } onDoubleClick = { () => props.onDoubleClick(task._id) } />;
         })}
     </div>
 }
