@@ -47,7 +47,6 @@ function App() {
     })
     .then(res => res.json())
     .then(data => {
-      console.log(data);
       setListItems(listItems.filter((item) => {
         console.log(item);
         return item._id !== itemIndex;
