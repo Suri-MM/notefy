@@ -9,17 +9,27 @@ function App() {
   const [ numItems, setNumItems ] = useState(0);
   const baseServerURI = "https://notefy-server.herokuapp.com"
 
-  function handleAddItem(name, desc) {
+  function handleAddItem(name, desc, rem) {
+    let data = rem.isRemainder === false ? {
+      name: name,
+      description: desc,
+      status: false
+    } : {
+      name: name,
+      description: desc,
+      status: false,
+      remainder: {
+        isRemainder: true,
+        date: rem.date
+      }
+    }
+
     fetch(baseServerURI + '/tasks', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json; charset=UTF-8'
       },
-      body: JSON.stringify({
-        name: name,
-        description: desc,
-        status: false
-      })
+      body: JSON.stringify(data)
     })
     .then(res => res.json())
     .then(data => {
